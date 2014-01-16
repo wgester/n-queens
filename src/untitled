@@ -1,0 +1,54 @@
+window.countNRooksSolutions = function(n){
+  var solutionCount;
+  var choices = [];
+  for (var i = 0; i < n; i++){
+    choices.push(i);
+  }
+  var resultsArray = [];
+
+  var recurseMe = function(choices){
+    for (var i = 0; i < choices.length; i++){
+      var result = [];
+      var invalidChoices = [];
+      for(var j = 0; j < choices.length; j++){
+        invalidChoices.push([]);
+      }
+      for(var j = 0; j < choices.length; j++){
+        invalidChoices[j].push(i-1);
+        invalidChoices[j].push(i+1);
+      }
+      result.push(choices[i]);
+      var newChoices = choices.slice(0);
+      newChoices.splice(i,1);
+      if (choices.length > 1){
+        recurseMeHelper(newChoices, result, invalidChoices);
+      } else {
+        resultsArray.push([i]);
+      }
+    }
+  };
+
+  var recurseMeHelper = function(choices, result, invalidChoices){
+    for (var i = 0; i < choices.length; i++){
+      if(!~invalidChoices[0].indexOf(i)){
+        var newInvalidChoices = invalidChoices.slice(1);
+        for(var j = 0; j < choices.length; j++){
+          invalidChoices[j].push(i-1);
+          invalidChoices[j].push(i+1);
+        }
+        console.log(invalidChoices);
+        var newResult = result.concat(choices[i]);
+        var newChoices = choices.slice(0);
+        newChoices.splice(i,1);
+        if (choices.length > 1){
+          recurseMeHelper(newChoices, newResult, newInvalidChoices);
+        }else {
+          resultsArray.push(newResult);
+        }
+      }
+    }
+  };
+  recurseMe(choices);
+  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
+  return resultsArray.length;
+};
