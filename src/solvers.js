@@ -92,11 +92,11 @@ window.countNQueensSolutions = function(n){
   for (var i = 0; i < n; i++){
     choices.push(i);
   }
-  var resultsArray = [];
+  var results = 0;
 
   var recurseMe = function(choices){
     if (choices.length === 0){
-      resultsArray.push([]);
+      results += 1;
     }
     for (var i = 0; i < choices.length; i++){
       var invalidChoices = [];
@@ -114,14 +114,14 @@ window.countNQueensSolutions = function(n){
       if (choices.length > 1){
         recurseMeHelper(newChoices, result, invalidChoices);
       } else {
-        resultsArray.push([i]);
+        results += 1;
       }
     }
   };
 
   var recurseMeHelper = function(choices, result, invalidChoices){
     if (choices.length === 0){
-      resultsArray.push(result);
+      results += 1;
     }
     for (var m = 0; m < choices.length; m++){
       if (invalidChoices[0].indexOf(choices[m]) === -1){
@@ -138,8 +138,6 @@ window.countNQueensSolutions = function(n){
         newChoices.splice(m,1);
         if (choices.length > 0){
           recurseMeHelper(newChoices, newResult, newInvalidChoices);
-        }else {
-          resultsArray.push(newResult);
         }
       }
     }
@@ -147,5 +145,5 @@ window.countNQueensSolutions = function(n){
   recurseMe(choices);
   var end = +new Date();
   console.log(end - start);
-  return resultsArray.length;
+  return results;
 };
